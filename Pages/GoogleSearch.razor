@@ -1,4 +1,4 @@
-﻿ @page "/"
+﻿@page "/"
 @using System.Net.Http
 @using System.Net.Http.Json
 @using System.Text.Json
@@ -9,7 +9,7 @@
 @inject IConfiguration Configuration
 
 
-<h1>Vyhledávač Výsledků Google</h1>
+<h1 style="text-align:center">Vyhledávač Výsledků Google</h1>
 <div class="container mt-4">
     <div class="input-group mb-3">
         <input value="@searchQuery" @oninput="e => searchQuery = e.Value.ToString()" class="form-control" placeholder="Zadejte hledaný výraz" @onkeydown="HandleKeyPress" />
