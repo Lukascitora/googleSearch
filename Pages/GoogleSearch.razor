@@ -19,9 +19,7 @@
     @if (isLoading)
     {
         <div class="text-center">
-            <div class="spinner-border text-primary" role="status">
-                
-            </div>
+            <div class="spinner-border text-primary" role="status"/>
         </div>
     }
 
@@ -45,7 +43,7 @@
             }
         </ul>
     }
-    else if (hasSearched && (results == null || results.Count == 0))
+    else if (hadSearched && (results == null || results.Count == 0))
     {
         <div class="alert alert-warning" role="alert">
             Nebyly nalezeny žádné výsledky pro dotaz "@searchQuery".
@@ -57,9 +55,10 @@
     private string searchQuery = string.Empty;
     private List<ResultItem> results = new();
     private bool isLoading = false;
-    private bool hasSearched = false;
+    private bool hadSearched = false;
     private string selectedFormat = "json";
 
+    // Method to fetch search results from Google Custom Search API
     private async Task FetchResults()
     {
         if (string.IsNullOrWhiteSpace(searchQuery))
@@ -81,10 +80,12 @@
         }
         finally
         {
+            hadSearched = true;
             isLoading = false;
         }
     }
 
+    // Method to handle the "Enter" keypress for triggering a search
     private async Task HandleKeyPress(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
@@ -93,6 +94,7 @@
         }
     }
 
+    // Method to save the results in the selected format
     private async Task SaveResults()
     {
         IDataSerializer serializer = DataSerializerFactory.CreateSerializer(selectedFormat);
@@ -142,8 +144,8 @@
         {
             return format.ToLower() switch
             {
-                "json" => new JsonDataSerializer(), // Return JSON serializer for "json"
-                "xml" => new XmlDataSerializer(), // Return XML serializer for "xml"
+                "json" => new JsonDataSerializer(), 
+                "xml" => new XmlDataSerializer(), 
                 _ => throw new NotSupportedException($"Format '{format}' is not supported.") // Throw error for unsupported formats
             };
         }
@@ -152,14 +154,14 @@
     // Represents an individual search result item from Google Custom Search
     public class ResultItem
     {
-        public string Title { get; set; } // The title of the search result
-        public string Link { get; set; } // The URL link to the result
-        public string Snippet { get; set; } // A brief snippet or description of the result
+        public string Title { get; set; } 
+        public string Link { get; set; } 
+        public string Snippet { get; set; } 
     }
 
     // Represents the response from the Google Custom Search API
     public class GoogleSearchResponse
     {
-        public List<ResultItem> Items { get; set; } // List of search result items
+        public List<ResultItem> Items { get; set; } 
     }
 }
